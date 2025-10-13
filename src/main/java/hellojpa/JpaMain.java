@@ -15,26 +15,16 @@ public class JpaMain {
 
         try {
 
-            //저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
             Member member = new Member();
             member.setUsername("member1");
+
             em.persist(member);
 
-            team.addMember(member);
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMembers().add(member);
 
-            em.flush();
-            em.clear();
-
-            Team findTeam = em.find(Team.class, team.getId());
-            List<Member> members = findTeam.getMembers();
-
-            for (Member m : members) {
-                System.out.println("m = " + m.getUsername());
-            }
+            em.persist(team);
 
             tx.commit();
         } catch (Exception e) {
