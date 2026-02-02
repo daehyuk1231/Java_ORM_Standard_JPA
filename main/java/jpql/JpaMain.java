@@ -19,7 +19,7 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername("관리자");
             member.setAge(10);
             member.setType(MemberType.ADMIN);
 
@@ -30,10 +30,9 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m.username, 'HELLO', TRUE From Member m " +
-                            "where m.type = :userType";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .setParameter("userType", MemberType.ADMIN)
+            String query = "select nullif(m.username, '관리자') as username " +
+                    " from Member m ";
+            List<String> result = em.createQuery(query, String.class)
                     .getResultList();
 
             tx.commit();
